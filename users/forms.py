@@ -22,7 +22,16 @@ class CustomerSignUpForm(UserCreationForm):
 
 
 class CompanySignUpForm(UserCreationForm):
-    pass
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ['username', 'email']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_company = True
+        if commit:
+            user.save()
+        return user
 
 
 class UserLoginForm(forms.Form):
