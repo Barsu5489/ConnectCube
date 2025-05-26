@@ -18,20 +18,45 @@ def validate_email(value):
 
 
 class CustomerSignUpForm(UserCreationForm):
-    pass
-
-
-class CompanySignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ['username', 'email']
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.is_company = True
+        user.is_customer = True
         if commit:
             user.save()
         return user
+
+
+class CompanySignUpForm(UserCreationForm):
+    field = forms.ChoiceField(
+        choices=[
+            ('tech', 'Technology'),
+            ('finance', 'Finance'),
+            ('healthcare', 'Healthcare'),
+            ('education', 'Education'),
+            ('other', 'Other'),
+        ],
+        label="Field of Work"
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ['username', 'email']  
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_company = True
+        if commit:
+            user.save()
+            Company.objects.create(
+                user=user,
+                field=self.cleaned_data['field']
+            )
+        return user
+
 
 
 class UserLoginForm(forms.Form):
