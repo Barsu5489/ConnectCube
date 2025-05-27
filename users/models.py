@@ -19,10 +19,9 @@ class Customer(models.Model):
 
 class Company(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    company_name = models.CharField(max_length=100)  # <-- Add this line
     field = models.CharField(
         max_length=70,
-        choices=[
+        choices=(
             ("Air Conditioner", "Air Conditioner"),
             ("All in One", "All in One"),
             ("Carpentry", "Carpentry"),
@@ -35,14 +34,13 @@ class Company(models.Model):
             ("Painting", "Painting"),
             ("Plumbing", "Plumbing"),
             ("Water Heaters", "Water Heaters"),
-        ],
+        ),
         blank=False,
         null=False,
     )
     rating = models.IntegerField(
-        validators=[MaxValueValidator(5), MinValueValidator(0)],
-        default=0
+        validators=[MaxValueValidator(5), MinValueValidator(0)], default=0
     )
 
     def __str__(self):
-        return f"{self.company_name} - {self.user.username}"
+        return str(self.user.id) + " - " + self.user.username
