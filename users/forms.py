@@ -20,10 +20,11 @@ def validate_email(value):
 class CustomerSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'date_of_birth']
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.date_of_birth = self.cleaned_data['date_of_birth']
         user.is_customer = True
         if commit:
             user.save()
@@ -33,11 +34,18 @@ class CustomerSignUpForm(UserCreationForm):
 class CompanySignUpForm(UserCreationForm):
     field = forms.ChoiceField(
         choices=[
-            ('tech', 'Technology'),
-            ('finance', 'Finance'),
-            ('healthcare', 'Healthcare'),
-            ('education', 'Education'),
-            ('other', 'Other'),
+            ('Air Conditioner', 'Air Conditioner'),
+            ('All in One', 'All in One'),
+            ('Carpentry', 'Carpentry'),
+            ('Electricity', 'Electricity'),
+            ('Gardening', 'Gardening'),
+            ('Home Machines', 'Home Machines'),
+            ('Housekeeping', 'Housekeeping'),
+            ('Interior Design', 'Interior Design'),
+            ('Locks', 'Locks'),
+            ('Painting', 'Painting'),
+            ('Plumbing', 'Plumbing'),
+            ('Water Heaters', 'Water Heaters'),
         ],
         label="Field of Work"
     )
