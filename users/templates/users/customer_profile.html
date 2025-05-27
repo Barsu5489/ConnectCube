@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {{ user.username }}'s Profile
+{% endblock %}
+
+{% block content %}
+    <div class="profile-container">
+        <h1>Customer Profile</h1>
+
+        <div class="profile-section">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+            <p><strong>Last Login:</strong> {{ user.last_login }}</p>
+            <p><strong>Date of Birth:</strong> {{ customer.birth|date:"Y-m-d" }}</p>
+        </div>
+
+        <hr>
+
+        <h2 class="title">Previous Requested Services</h2>
+        {% if sh %}
+            {% for service in sh %}
+                <div class="service-card">
+                    <p>
+                        <strong><a href="/services/{{service.service.id}}">
+                            {{ service.service.name }}
+                        </a></strong> 
+                        ({{ service.service.field }})
+                    </p>
+                    <p>Price: {{ service.price }}</p>
+                    <p>Requested on: {{ service.request_date }}</p>
+                    <p>
+                        Company: 
+                        <a href="/company/{{ service.service.company.user.username }}">
+                            {{ service.service.company.user.username }}
+                        </a>
+                    </p>
+                    <div class="line"></div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No previous services requested.</p>
+        {% endif %}
+    </div>
+{% endblock %}
