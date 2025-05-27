@@ -18,7 +18,25 @@ def index(request, id):
 
 
 def create(request):
-    return render(request, "services/create.html", {})
+   
+    choices = Service.choices
+
+    if request.method == "POST":
+        form = CreateNewService(request.POST, choices=choices)
+        if form.is_valid():
+            Service.objects.create(
+                name=form.cleaned_data["name"],
+                description=form.cleaned_data["description"],
+                price_hour=form.cleaned_data["price_hour"],
+                field=form.cleaned_data["field"],
+                company=Company.objects.get(user=request.user),
+            )
+            return redirect("services_list")
+    else:
+        form = CreateNewService(choices=choices)
+
+    return render(request, "services/create.html", {"form": form})
+
 
 
 def service_field(request, field):
