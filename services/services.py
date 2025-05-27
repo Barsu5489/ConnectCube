@@ -23,4 +23,13 @@ class CreateNewService(forms.Form):
 
 
 class RequestServiceForm(forms.Form):
-    pass
+    request_date = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        label="Request Date",
+        required=True
+    )
+    notes = forms.CharField(
+        widget=forms.Textarea(attrs={'placeholder': 'Any special instructions?'}),
+        required=False,
+        label="Additional Notes"
+    )
