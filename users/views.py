@@ -4,6 +4,7 @@ from django.views.generic import CreateView, TemplateView
 
 from .forms import CustomerSignUpForm, CompanySignUpForm, UserLoginForm
 from .models import User, Company, Customer
+from django.contrib import messages
 
 
 def register(request):
@@ -41,4 +42,19 @@ class CompanySignUpView(CreateView):
 
 
 def LoginUserView(request):
-    pass
+    form = UserLoginForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        email_or_username = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+
+        user = User.objects.filter(email=email_or_username).first() or \
+               User.objects.filter(username=email_or_username).first()
+
+        if user:
+            user = authenticate(request, username=user.username, password=password)
+            if user:
+                login(request, user)
+                return redirect('/')
+        form.add_error(None, "Invalid login credentials.")
+    
+    return render(request, 'users/login.html', {'form': form})
