@@ -26,6 +26,7 @@
               {% else %}
                 <a href="#">Profile</a> <!-- or some default -->
               {% endif %}
+              <a href="{% url 'main:logout' %}" style="margin-left: 15px;">Logout</a>
             {% else %}
               <a href="{% url 'login_user' %}">Login</a>
             {% endif %}
