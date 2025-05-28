@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 
 from users.models import User, Company, Customer
-from services.models import Service, ServiceHistory
+from services.models import Service, ServiceRequest
 
 
 def home(request):
@@ -14,11 +14,11 @@ def customer_profile(request, name):
     customer = get_object_or_404(Customer, user__username=name)
 
     # Filter ServiceHistory by the customer, NOT by user
-    service_history = ServiceHistory.objects.filter(customer=customer).order_by('-request_date')
-
+    sh = ServiceRequest.objects.filter(customer=customer).order_by('-request_date')
+    print(sh)
     return render(request, 'users/customer_profile.html', {
         'customer': customer,
-        'service_history':service_history,
+        'sh':sh,
     })
 
 
