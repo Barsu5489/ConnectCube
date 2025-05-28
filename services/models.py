@@ -41,3 +41,11 @@ class ServiceHistory(models.Model):
 
     def __str__(self):
         return f"{self.customer.user.username} requested {self.service.name} on {self.request_date.strftime('%Y-%m-%d')}"
+class ServiceRequest(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    request_date = models.DateTimeField()
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Request by {self.customer.user.username} for {self.service.name} on {self.request_date.strftime('%Y-%m-%d')}"
