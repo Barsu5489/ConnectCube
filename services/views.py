@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 from users.models import Company, Customer, User
 
-from .models import Service
+from .models import Service, ServiceHistory, ServiceRequest
 from .forms import CreateNewService, RequestServiceForm
 
 
 def service_list(request):
     services = Service.objects.all().order_by("-date")
     return render(request, "services/list.html", {"services": services})
-
+def service_list(request):
+    services = Service.objects.all().order_by("-date")
+    return render(request, "services/list.html", {"services": services})
 
 def index(request, id):
     service = Service.objects.get(id=id)
@@ -47,6 +50,30 @@ def service_field(request, field):
         request, "services/field.html", {"services": services, "field": field}
     )
 
+def request_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
 
-def request_service(request, id):
-    return render(request, "services/request_service.html", {})
+    if request.method == 'POST':
+        form = RequestServiceForm(request.POST)
+        if form.is_valid():
+            request_date = form.cleaned_data['request_date']
+            notes = form.cleaned_data['notes']
+
+            # Get the Customer instance related to the logged-in user
+            customer = Customer.objects.get(user=request.user)
+         
+
+            ServiceRequest.objects.create(
+                service=service,
+                customer=customer,
+                request_date=request_date,
+                notes=notes
+            )
+            return redirect('services_list')
+    else:
+        form = RequestServiceForm()
+
+    return render(request, 'services/request_service.html', {
+        'form': form,
+        'service': service
+    })
