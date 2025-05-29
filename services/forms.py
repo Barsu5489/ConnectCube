@@ -28,6 +28,18 @@ class RequestServiceForm(forms.Form):
         label="Request Date",
         required=True
     )
+    address = forms.CharField(
+        max_length=255,
+        label="Service Address",
+        widget=forms.TextInput(attrs={'placeholder': 'e.g. 123 Main St, Nairobi'})
+    )
+    duration_hours = forms.IntegerField(
+        min_value=1,
+        initial=1,
+        label="Duration (hours)",
+        required=True,
+        widget=forms.NumberInput(attrs={'placeholder': 'Duration in hours'})
+    )
     notes = forms.CharField(
         widget=forms.Textarea(attrs={'placeholder': 'Additional notes (optional)'}),
         required=False,

@@ -28,6 +28,12 @@ class RequestServiceForm(forms.Form):
         label="Request Date",
         required=True
     )
+    duration_hours = forms.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        min_value=0.5,
+        label="Duration (in hours)"
+)
     notes = forms.CharField(
         widget=forms.Textarea(attrs={'placeholder': 'Any special instructions?'}),
         required=False,

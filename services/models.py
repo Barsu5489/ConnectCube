@@ -17,6 +17,10 @@ class Service(models.Model):
     choices = SERVICE_FIELD_CHOICES
     field = models.CharField(max_length=30, blank=False, null=False, choices=choices)
     date = models.DateTimeField(auto_now=True, null=False)
+    address = models.CharField(max_length=255)
+    total_price = models.DecimalField(max_digits=6, decimal_places=2)
+
+
 
     def __str__(self):
         return self.name
@@ -29,11 +33,15 @@ class ServiceHistory(models.Model):
 
     def __str__(self):
         return f"{self.customer.user.username} requested {self.service.name} on {self.request_date.strftime('%Y-%m-%d')}"
+    
 class ServiceRequest(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     request_date = models.DateTimeField()
     notes = models.TextField(blank=True, null=True)
+    duration_hours = models.IntegerField(default=1)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f"Request by {self.customer.user.username} for {self.service.name} on {self.request_date.strftime('%Y-%m-%d')}"
+        return f"{self.customer.user.username} - {self.service.name} on {self.request_date}"

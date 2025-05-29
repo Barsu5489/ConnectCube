@@ -58,8 +58,8 @@ def service_field(request, field):
     # Get services that match the field OR are from "All in One" companies
     from django.db.models import Q
     services = Service.objects.filter(
-        Q(field=field) |  # Services specifically in this field
-        Q(company__field="All in One")  # OR services from "All in One" companies
+        Q(field=field) |  
+        Q(company__field="All in One")  
     )
     
     return render(
@@ -74,17 +74,27 @@ def request_service(request, service_id):
         if form.is_valid():
             request_date = form.cleaned_data['request_date']
             notes = form.cleaned_data['notes']
+            duration_hours = form.cleaned_data['duration_hours']
+            address = form.cleaned_data['address']
 
-            # Get the Customer instance related to the logged-in user
+            # Get the customer instance
             customer = Customer.objects.get(user=request.user)
-         
 
+            # Calculate total price
+            price_per_hour = service.price_hour  
+            total_price = duration_hours * price_per_hour
+
+            # Save to DB
             ServiceRequest.objects.create(
                 service=service,
                 customer=customer,
                 request_date=request_date,
-                notes=notes
+                notes=notes,
+                duration_hours=duration_hours,
+                address=address,
+                total_price=total_price
             )
+
             return redirect('services_list')
     else:
         form = RequestServiceForm()
@@ -93,3 +103,4 @@ def request_service(request, service_id):
         'form': form,
         'service': service
     })
+
