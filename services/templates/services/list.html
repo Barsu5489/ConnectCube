@@ -1,22 +1,60 @@
 {% extends 'main/base.html' %}
-{% block title %}
-    Services List
-{% endblock %}
-{% block content %}
-    <p class="title">Services</p>
-    {% if user.is_company %}
-        <a class="create_service" href="/services/create"> Create Service</a>
-    {% endif %}
-    <div class='services_list'>
-        {% if services %}
-            {% for service in services.all %}
 
-            <li>{{ service.name }}</li>
-            <li>{{ service.description }}</li>
-            <li>{{ service.price_hour }}</li> $ 
+{% block title %}Services List{% endblock %}
+
+{% block content %}
+<h2 class="title">Services</h2>
+
+{% if user.is_company %}
+    <a class="create_service" href="/services/create">Create Service</a>
+{% endif %}
+
+<button id="toggleBtn">🔥 Show Most Requested</button>
+
+<div id="allServices">
+    <h3>All Services</h3>
+    {% if services %}
+        <ul>
+            {% for service in services %}
+                <li><strong>{{ service.name }}</strong> – {{ service.description }} – {{ service.price_hour }} $</li>
             {% endfor %}
-        {% else %}
-            <h2>Sorry No services available yet</h2>
-        {% endif %}
-     </div>
+        </ul>
+    {% else %}
+        <p>No services available.</p>
+    {% endif %}
+</div>
+
+<div id="mostRequested" style="display: none;">
+    <h3>🔥 Most Requested Services</h3>
+    {% if service_counts %}
+        <ul>
+            {% for item in service_counts %}
+                <li>{{ item.service__name }} – {{ item.request_count }} request{{ item.request_count|pluralize }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No service requests yet.</p>
+    {% endif %}
+</div>
+
+<script>
+    const toggleBtn = document.getElementById("toggleBtn");
+    const allServices = document.getElementById("allServices");
+    const mostRequested = document.getElementById("mostRequested");
+
+    let showingMost = false;
+
+    toggleBtn.addEventListener("click", () => {
+        showingMost = !showingMost;
+        if (showingMost) {
+            allServices.style.display = "none";
+            mostRequested.style.display = "block";
+            toggleBtn.textContent = "🔁 Show All Services";
+        } else {
+            allServices.style.display = "block";
+            mostRequested.style.display = "none";
+            toggleBtn.textContent = "🔥 Show Most Requested";
+        }
+    });
+</script>
 {% endblock %}
