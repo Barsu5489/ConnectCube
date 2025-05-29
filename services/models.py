@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-from users.models import Company, Customer
+from users.models import Company, Customer, SERVICE_FIELD_CHOICES
 
 
 class Service(models.Model):
@@ -14,19 +14,7 @@ class Service(models.Model):
     rating = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)], default=0
     )
-    choices = (
-        ("Air Conditioner", "Air Conditioner"),
-        ("Carpentry", "Carpentry"),
-        ("Electricity", "Electricity"),
-        ("Gardening", "Gardening"),
-        ("Home Machines", "Home Machines"),
-        ("House Keeping", "House Keeping"),
-        ("Interior Design", "Interior Design"),
-        ("Locks", "Locks"),
-        ("Painting", "Painting"),
-        ("Plumbing", "Plumbing"),
-        ("Water Heaters", "Water Heaters"),
-    )
+    choices = SERVICE_FIELD_CHOICES
     field = models.CharField(max_length=30, blank=False, null=False, choices=choices)
     date = models.DateTimeField(auto_now=True, null=False)
 
