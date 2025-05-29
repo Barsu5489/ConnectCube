@@ -7,13 +7,17 @@ from users.models import Company, Customer, User
 from .models import Service, ServiceHistory, ServiceRequest
 from .forms import CreateNewService, RequestServiceForm
 
+from django.db.models import Count
 
 def service_list(request):
     services = Service.objects.all().order_by("-date")
-    return render(request, "services/list.html", {"services": services})
-def service_list(request):
-    services = Service.objects.all().order_by("-date")
-    return render(request, "services/list.html", {"services": services})
+    service_counts = (
+    ServiceRequest.objects
+    .values('service__id', 'service__name')
+    .annotate(request_count=Count('id'))
+    .order_by('-request_count')
+    )
+    return render(request, "services/list.html", {"services": services, "service_counts": service_counts })
 
 def index(request, id):
     service = Service.objects.get(id=id)
