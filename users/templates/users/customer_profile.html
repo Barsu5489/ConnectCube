@@ -30,7 +30,7 @@
                         </a></strong> 
                         ({{ service.service.field }})
                     </p>
-                    <p>Price: {{ service.price }}</p>
+                    <p>Price: {{ service.total_price }}</p>
                     <p>Requested on: {{ service.request_date }}</p>
                     <p>
                         Company: 
@@ -38,6 +38,7 @@
                             {{ service.service.company.user.username }}
                         </a>
                     </p>
+                    
                     <div class="line"></div>
                 </div>
             {% endfor %}
