@@ -24,7 +24,7 @@
               {% elif request.user.is_customer %}
                 <a href="{% url 'customer_profile' request.user.username %}">Profile</a>
               {% else %}
-                <a href="#">Profile</a> <!-- or some default -->
+                <a href="#">Profile</a> 
               {% endif %}
               <a href="{% url 'main:logout' %}" style="margin-left: 15px;">Logout</a>
             {% else %}
