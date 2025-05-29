@@ -3,8 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, auth
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
-from .models import User, Company, Customer
-
+from .models import User, Company, Customer, SERVICE_FIELD_CHOICES
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -38,20 +37,7 @@ class CustomerSignUpForm(UserCreationForm):
 
 class CompanySignUpForm(UserCreationForm):
     field = forms.ChoiceField(
-        choices=[
-            ('Air Conditioner', 'Air Conditioner'),
-            ('All in One', 'All in One'),
-            ('Carpentry', 'Carpentry'),
-            ('Electricity', 'Electricity'),
-            ('Gardening', 'Gardening'),
-            ('Home Machines', 'Home Machines'),
-            ('Housekeeping', 'Housekeeping'),
-            ('Interior Design', 'Interior Design'),
-            ('Locks', 'Locks'),
-            ('Painting', 'Painting'),
-            ('Plumbing', 'Plumbing'),
-            ('Water Heaters', 'Water Heaters'),
-        ],
+        choices=SERVICE_FIELD_CHOICES,
         label="Field of Work"
     )
 
