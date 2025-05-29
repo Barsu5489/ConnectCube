@@ -25,9 +25,14 @@ def index(request, id):
 
 
 def create(request):
-   
-    choices = Service.choices
-
+    # CHANGED: Get company and use its available fields
+    try:
+        company = Company.objects.get(user=request.user)
+        choices = company.get_available_service_fields()  # ← NEW: Dynamic choices
+    except Company.DoesNotExist:
+        from users.models import SERVICE_FIELD_CHOICES
+        choices = SERVICE_FIELD_CHOICES
+    
     if request.method == "POST":
         form = CreateNewService(request.POST, choices=choices)
         if form.is_valid():
@@ -36,12 +41,12 @@ def create(request):
                 description=form.cleaned_data["description"],
                 price_hour=form.cleaned_data["price_hour"],
                 field=form.cleaned_data["field"],
-                company=Company.objects.get(user=request.user),
+                company=company,  # ← CHANGED: Use the company variable
             )
             return redirect("services_list")
     else:
         form = CreateNewService(choices=choices)
-
+    
     return render(request, "services/create.html", {"form": form})
 
 
@@ -49,7 +54,14 @@ def create(request):
 def service_field(request, field):
     # search for the service present in the url
     field = field.replace("-", " ").title()
-    services = Service.objects.filter(field=field)
+    
+    # Get services that match the field OR are from "All in One" companies
+    from django.db.models import Q
+    services = Service.objects.filter(
+        Q(field=field) |  # Services specifically in this field
+        Q(company__field="All in One")  # OR services from "All in One" companies
+    )
+    
     return render(
         request, "services/field.html", {"services": services, "field": field}
     )
