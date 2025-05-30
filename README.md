@@ -55,7 +55,7 @@ python manage.py migrate
 
 Run the project with:
 ```sh
-python manage.py runserver
+python3 manage.py runserver
 
 ```
 ## 🤝 Contributing
