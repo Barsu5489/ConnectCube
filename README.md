@@ -44,10 +44,12 @@ A Django-based web platform to connect users with various local services, includ
 
 3. **Install the dependencies:**
 ```sh
-python -m venv venv
-source venv/bin/activate
+python3 -m venv venv
+python3 -m pip install --user virtualenv
+ ~/.local/bin/virtualenv env
+ source venv/bin/activate
 python3 manage.py makemigrations services
-python manage.py migrate
+python3 manage.py migrate
 ```
 
 
