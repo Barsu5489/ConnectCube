@@ -11,6 +11,8 @@ A Django-based web platform to connect users with various local services, includ
   - [🚀 Getting Started](#-getting-started)
     - [📋 Prerequisites](#-prerequisites)
     - [⚙️ Installation](#️-installation)
+    - [💻 Usage](#-usage)
+  - [🤝 Contributing](#-contributing)
   - [📜 License](#-license)
   - [✨ Acknowledgments](#-acknowledgments)
 
@@ -41,21 +43,21 @@ A Django-based web platform to connect users with various local services, includ
     ```
 
 3. **Install the dependencies:**
-
+```sh
 python -m venv venv
 source venv/bin/activate
 
 python manage.py migrate
-
+```
 
 
 ### 💻 Usage
 
 Run the project with:
-
+```sh
 python manage.py runserver
 
-
+```
 ## 🤝 Contributing
 
 - **💬 [Join the Discussions](https://LOCAL///discussions)**: Share your insights, provide feedback, or ask questions.
