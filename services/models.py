@@ -17,8 +17,8 @@ class Service(models.Model):
     choices = SERVICE_FIELD_CHOICES
     field = models.CharField(max_length=30, blank=False, null=False, choices=choices)
     date = models.DateTimeField(auto_now=True, null=False)
-    address = models.CharField(max_length=255)
-    total_price = models.DecimalField(max_digits=6, decimal_places=2)
+    address = models.CharField(max_length=255, default='')  
+    total_price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
 
 
 
@@ -28,7 +28,7 @@ class Service(models.Model):
 class ServiceHistory(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     request_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class ServiceRequest(models.Model):
     request_date = models.DateTimeField()
     notes = models.TextField(blank=True, null=True)
     duration_hours = models.IntegerField(default=1)
-    address = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True, default='')
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
     def __str__(self):
