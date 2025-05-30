@@ -110,7 +110,7 @@ python3 manage.py runserver
 
 ## ✨ Acknowledgments
 
-- Credit `Abraham Kingoo and Emmanuel Barsulai`, etc.
+- Credit `Abraham Kingoo and Emmanuel Barsulai`.
 
 <div align="right">
 
