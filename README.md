@@ -46,7 +46,7 @@ A Django-based web platform to connect users with various local services, includ
 ```sh
 python -m venv venv
 source venv/bin/activate
-
+python3 manage.py makemigrations services
 python manage.py migrate
 ```
 
